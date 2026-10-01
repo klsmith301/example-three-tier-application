@@ -66,6 +66,32 @@ The API is not exposed directly, but you can reach it through the web container 
 | POST | `/tasks` | Create a task (`{ "title": "..." }`) |
 | PATCH | `/tasks/:id` | Update a task (`{ "completed": true }` or `{ "title": "..." }`) |
 
+## Troubleshooting
+
+### API health check
+
+Port 3001 is **internal to the Docker Compose network** and is not bound to the host, so `http://localhost:3001` is not reachable directly from your browser or terminal.
+
+While the stack is running, verify the API is healthy by executing a request from inside the `api` container:
+
+```bash
+docker compose exec api wget -qO- http://localhost:3001/health
+```
+
+Expected response:
+
+```json
+{"status":"ok"}
+```
+
+If the command hangs or returns an error, check the API logs:
+
+```bash
+docker compose logs api
+```
+
+See [Running locally with Docker Compose](#running-locally-with-docker-compose) for full setup instructions.
+
 ## Project structure
 
 ```
@@ -130,4 +156,3 @@ DATABASE_URL=postgres://app:app@localhost:5432/app npx node-pg-migrate down
 ```
 
 When running via Docker Compose the `migrate` service handles this automatically on startup.
-
