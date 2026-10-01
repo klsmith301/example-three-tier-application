@@ -154,6 +154,26 @@ docker compose up postgres api
 docker compose up postgres
 ```
 
+## Check API health inside Compose
+
+Because port 3001 is declared with `expose` in `docker-compose.yml` rather than `ports`, it is reachable only from other containers on the Compose network — not from your host machine. Use `docker compose exec` to run the check inside the `api` container itself:
+
+```bash
+docker compose exec api wget -qO- http://localhost:3001/health
+```
+
+Expected output:
+
+```json
+{"status":"ok"}
+```
+
+A few things to note:
+
+- **`localhost` here is the `api` container's own loopback**, not your developer machine. The command runs inside the container, so `localhost:3001` resolves correctly.
+- **Port 3001 is internal only.** The `expose: ["3001"]` directive in `docker-compose.yml` makes the port available to sibling containers (e.g. `web`) but does not publish it to the host. Running `curl localhost:3001` directly on your machine will fail.
+- **A successful `{"status":"ok"}` response confirms** that the Express server has started and the `/health` endpoint is reachable within the Compose network.
+
 ## Development Workflow
 
 ### Making Frontend Changes
