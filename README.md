@@ -55,6 +55,16 @@ docker compose down -v
 docker compose up --build
 ```
 
+### Restart only the API service
+
+To restart just the API container without affecting the other services:
+
+```bash
+docker compose restart api
+```
+
+This restarts only the `api` service. The `web` and `postgres` (database) services continue running undisturbed and do not need to be restarted. Note that restarting a service is distinct from rebuilding its image — use `docker compose up --build api` if you need to rebuild the image first.
+
 ### Inspect local service logs
 
 Read the most recent output from a running service without restarting it:
