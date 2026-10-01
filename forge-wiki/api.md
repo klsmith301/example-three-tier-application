@@ -33,6 +33,19 @@ Returns a simple health check response. Used for liveness probes in Kubernetes/C
 { "status": "ok" }
 ```
 
+### Version
+
+```
+GET /api/version
+```
+
+Returns the API's current version as declared in `package.json`.
+
+**Response:**
+```json
+{ "version": "1.0.0" }
+```
+
 ### List All Tasks
 
 ```
