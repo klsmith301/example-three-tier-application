@@ -28,12 +28,21 @@ The app is a simple task manager (to-do list) that demonstrates how the three ti
 
 ## Quick Start
 
+### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (or Docker Engine + Compose plugin)
+
 ### Local
 
 ```bash
 docker compose up --build
 # Open http://localhost:3000
 ```
+
+Once running, you can:
+- View all tasks at http://localhost:3000
+- Add new tasks using the input form
+- Toggle task completion with checkboxes
 
 ### Deploy to GCP
 
@@ -44,4 +53,16 @@ terraform apply \
   -var="project_id=my-project" \
   -var="api_image=gcr.io/my-project/api:latest" \
   -var="web_image=gcr.io/my-project/web:latest"
+```
+
+For detailed deployment instructions, see [Infrastructure](infrastructure.md).
+
+## Cleanup
+
+```bash
+# Stop containers (keeps the postgres_data volume)
+docker compose down
+
+# Stop and delete all data
+docker compose down -v
 ```
