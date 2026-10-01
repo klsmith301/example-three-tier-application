@@ -55,6 +55,17 @@ docker compose down -v
 docker compose up --build
 ```
 
+### Inspect local service logs
+
+Read the most recent output from a running service without restarting it:
+
+```bash
+docker compose logs --tail=50 api
+docker compose logs --tail=50 web
+```
+
+Both commands print the last 50 log lines for the named service and return immediately, leaving the containers untouched.
+
 ### API endpoints
 
 The API is not exposed directly, but you can reach it through the web container or by temporarily mapping its port:
@@ -130,4 +141,3 @@ DATABASE_URL=postgres://app:app@localhost:5432/app npx node-pg-migrate down
 ```
 
 When running via Docker Compose the `migrate` service handles this automatically on startup.
-
