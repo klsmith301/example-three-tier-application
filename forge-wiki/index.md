@@ -20,6 +20,9 @@ The app is a simple task manager (to-do list) that demonstrates how the three ti
 
 ## Documentation
 
+- [Architecture Decisions](architecture-decisions.md) — Components, data stores, hosting, and libraries
+- [Coding Standards](coding-standards.md) — Languages, tooling, formatting, testing, naming, and project structure
+- [Known Issues](known-issues.md) — TODOs, FIXMEs, failing tests, and documented limits
 - [Frontend](frontend.md) — Next.js web application with React and Tailwind CSS
 - [API](api.md) — Express REST API with Node.js
 - [Database](database.md) — PostgreSQL schema and migrations
