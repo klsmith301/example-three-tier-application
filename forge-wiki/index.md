@@ -1,0 +1,47 @@
+# Example Three-Tier Application
+
+A reference implementation of a three-tier web application: a Next.js frontend, an Express REST API, and a PostgreSQL database. It runs locally with Docker Compose and deploys to Google Cloud Platform (Cloud Run + Cloud SQL) via Terraform.
+
+## Architecture
+
+```
+Browser → Web (Next.js :3000) → API (Express :3001) → PostgreSQL
+```
+
+| Layer | Technology | Location |
+|-------|-----------|----------|
+| Frontend | Next.js 16, React 19, Tailwind CSS | `src/web/` |
+| API | Express 5, Node.js 22 | `src/api/` |
+| Database | PostgreSQL 17 | managed by Docker / Cloud SQL |
+| Migrations | node-pg-migrate | `src/db/` |
+| Infrastructure | Terraform (GCP) | `src/infrastructure/` |
+
+The app is a simple task manager (to-do list) that demonstrates how the three tiers communicate.
+
+## Documentation
+
+- [Frontend](frontend.md) — Next.js web application with React and Tailwind CSS
+- [API](api.md) — Express REST API with Node.js
+- [Database](database.md) — PostgreSQL schema and migrations
+- [Infrastructure](infrastructure.md) — Terraform deployment to Google Cloud Platform
+- [Local Development](local-development.md) — Running with Docker Compose
+
+## Quick Start
+
+### Local
+
+```bash
+docker compose up --build
+# Open http://localhost:3000
+```
+
+### Deploy to GCP
+
+```bash
+cd src/infrastructure
+terraform init -backend-config="bucket=YOUR_BUCKET" -backend-config="prefix=terraform"
+terraform apply \
+  -var="project_id=my-project" \
+  -var="api_image=gcr.io/my-project/api:latest" \
+  -var="web_image=gcr.io/my-project/web:latest"
+```
