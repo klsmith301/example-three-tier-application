@@ -66,6 +66,46 @@ The API is not exposed directly, but you can reach it through the web container 
 | POST | `/tasks` | Create a task (`{ "title": "..." }`) |
 | PATCH | `/tasks/:id` | Update a task (`{ "completed": true }` or `{ "title": "..." }`) |
 
+## Local development quick reference
+
+> A quick cheat-sheet. See [Running locally with Docker Compose](#running-locally-with-docker-compose) for the full guide.
+
+### Start
+
+```bash
+docker compose up --build
+```
+
+Frontend available at <http://localhost:3000>.
+
+### Stop
+
+```bash
+# Stop containers, keep database volume
+docker compose down
+
+# Stop containers and delete all data
+docker compose down -v
+```
+
+### Port mappings
+
+| Service | Host port | Notes |
+|---------|-----------|-------|
+| web (Next.js) | 3000 | Exposed to host |
+| api (Express) | — | Internal only (`expose`, not `ports`) |
+| postgres | — | Internal only |
+
+### Check API health
+
+The API port is internal to the Docker network and not mapped to the host.
+Run the health check from inside the `api` container:
+
+```bash
+docker compose exec api wget -qO- http://localhost:3001/health
+# Expected: {"status":"ok"}
+```
+
 ## Project structure
 
 ```
@@ -130,4 +170,3 @@ DATABASE_URL=postgres://app:app@localhost:5432/app npx node-pg-migrate down
 ```
 
 When running via Docker Compose the `migrate` service handles this automatically on startup.
-
