@@ -136,19 +136,6 @@ The API uses a PostgreSQL connection pool (`src/api/db.js`) configured via `DATA
 cd src/api
 npm install
 export DATABASE_URL=postgres://app:app@localhost:5432/app
-npm start
-# API listening on port 3001
+node index.js
+# API available at http://localhost:3001
 ```
-
-For development with auto-reload:
-```bash
-npm run dev
-```
-
-## Error Handling
-
-- `200 OK` — Successful read or update
-- `201 Created` — Task created successfully
-- `400 Bad Request` — Invalid input (missing/empty title)
-- `404 Not Found` — Task ID does not exist
-- `500 Internal Server Error` — Unexpected server error
