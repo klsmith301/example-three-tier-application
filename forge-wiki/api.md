@@ -109,6 +109,24 @@ Updates an existing task. Pass `completed` (boolean) or `title` (string) or both
 { "error": "Not found" }
 ```
 
+### Delete a Task
+
+```
+DELETE /tasks/:id
+```
+
+Permanently deletes a task by its ID. Returns 204 No Content on success.
+
+**Response:** (204 No Content)
+```
+(empty body)
+```
+
+**Error:** (404 Not Found)
+```json
+{ "error": "Not found" }
+```
+
 ## Implementation Details
 
 ### Database Connection
@@ -122,6 +140,7 @@ The API uses a PostgreSQL connection pool (`src/api/db.js`) configured via `DATA
 - Title values are trimmed of whitespace before storage
 - Completed status defaults to `false` for new tasks
 - PATCH: fetches the existing row first, then applies partial updates
+- DELETE: uses `DELETE ... RETURNING id` to verify the task existed
 
 ## Environment Variables
 
@@ -145,10 +164,24 @@ For development with auto-reload:
 npm run dev
 ```
 
+## Testing
+
+Run the test suite:
+```bash
+npm test
+```
+
+Tests use Jest and supertest to verify:
+- All CRUD operations on tasks
+- Proper HTTP status codes (200, 201, 204, 404, 400)
+- Input validation and trimming
+- Database operation correctness
+
 ## Error Handling
 
 - `200 OK` — Successful read or update
 - `201 Created` — Task created successfully
+- `204 No Content` — Task deleted successfully
 - `400 Bad Request` — Invalid input (missing/empty title)
 - `404 Not Found` — Task ID does not exist
 - `500 Internal Server Error` — Unexpected server error
