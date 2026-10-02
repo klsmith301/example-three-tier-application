@@ -49,12 +49,6 @@ Fetches all tasks from the database ordered by creation date.
     "title": "Buy groceries",
     "completed": false,
     "created_at": "2024-06-16T12:00:00.000Z"
-  },
-  {
-    "id": 2,
-    "title": "Clean room",
-    "completed": true,
-    "created_at": "2024-06-16T12:05:00.000Z"
   }
 ]
 ```
@@ -100,12 +94,6 @@ Updates an existing task. Pass `completed` (boolean) or `title` (string) or both
 { "completed": true }
 ```
 
-or
-
-```json
-{ "title": "Buy more groceries" }
-```
-
 **Response:**
 ```json
 {
@@ -125,11 +113,7 @@ or
 
 ### Database Connection
 
-The API uses a PostgreSQL connection pool from the `pg` library. The connection string is provided via the `DATABASE_URL` environment variable:
-
-```
-postgres://user:password@host:port/database
-```
+The API uses a PostgreSQL connection pool (`src/api/db.js`) configured via `DATABASE_URL` environment variable. The pool object is exported directly and used throughout `index.js` with `db.query(...)`.
 
 ### Request Handling
 
@@ -137,6 +121,7 @@ postgres://user:password@host:port/database
 - Tasks are always ordered by `created_at` ascending
 - Title values are trimmed of whitespace before storage
 - Completed status defaults to `false` for new tasks
+- PATCH: fetches the existing row first, then applies partial updates
 
 ## Environment Variables
 
@@ -150,10 +135,7 @@ postgres://user:password@host:port/database
 ```bash
 cd src/api
 npm install
-
-# Set DATABASE_URL
 export DATABASE_URL=postgres://app:app@localhost:5432/app
-
 npm start
 # API listening on port 3001
 ```
@@ -165,7 +147,6 @@ npm run dev
 
 ## Error Handling
 
-The API returns standard HTTP status codes:
 - `200 OK` — Successful read or update
 - `201 Created` — Task created successfully
 - `400 Bad Request` — Invalid input (missing/empty title)
