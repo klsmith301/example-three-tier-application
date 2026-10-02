@@ -48,6 +48,19 @@ app.patch('/tasks/:id', async (req, res) => {
   res.json(updated[0]);
 });
 
-app.listen(PORT, () => {
-  console.log(`API listening on port ${PORT}`);
+// DELETE /tasks/:id — delete a task
+app.delete('/tasks/:id', async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const { rows } = await db.query('DELETE FROM tasks WHERE id = $1 RETURNING id', [id]);
+  if (rows.length === 0) return res.status(404).json({ error: 'Not found' });
+  res.status(204).end();
 });
+
+// Start server only if this is the main module (not required for testing)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`API listening on port ${PORT}`);
+  });
+}
+
+module.exports = app;
