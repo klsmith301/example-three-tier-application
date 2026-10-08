@@ -8,9 +8,9 @@ The application is a three-tier web application:
 Browser → Web (Next.js :3000) → API (Express :3001) → PostgreSQL
 ```
 
-**Frontend** (`src/web/`) — Next.js 16 with React 19 and Tailwind CSS. Uses Next.js Server Components to fetch data on the server via `getTasks()`, `createTask()`, `toggleTask()`, and `deleteTask()` functions in `src/web/app/actions.ts`. The frontend is the only public entry point and communicates with the API via HTTP REST calls from server-side code.
+**Frontend** (`src/web/`) — Next.js 16 with React 19 and Tailwind CSS. Uses Next.js Server Components to fetch data on the server via `getTasks()`, `createTask()`, and `toggleTask()` functions in `src/web/app/actions.ts`. The frontend is the only public entry point and communicates with the API via HTTP REST calls from server-side code.
 
-**API** (`src/api/`) — Express 5 running on Node.js 22. Provides REST endpoints (`GET /tasks`, `POST /tasks`, `PATCH /tasks/:id`, `DELETE /tasks/:id`, `GET /health`) that the frontend calls. Routes are defined in `src/api/index.js` and use a PostgreSQL connection pool.
+**API** (`src/api/`) — Express 5 running on Node.js 22. Provides REST endpoints (`GET /tasks`, `POST /tasks`, `PATCH /tasks/:id`, `GET /health`) that the frontend calls. Routes are defined in `src/api/index.js` and use a PostgreSQL connection pool.
 
 **Database** (`src/db/`) — PostgreSQL 17 schema managed by node-pg-migrate. Migrations live in `src/db/migrations/` and are run automatically on startup before the API starts.
 
