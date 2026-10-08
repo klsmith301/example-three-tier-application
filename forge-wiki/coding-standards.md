@@ -65,7 +65,7 @@ No test suites or testing frameworks (Jest, Mocha, Vitest, etc.) are installed i
 
 **Variables and functions**
 
-- JavaScript/TypeScript use camelCase: `getTasks`, `createTask`, `toggleTask`, `revalidatePath`, `pgm` (in migrations)
+- JavaScript/TypeScript use camelCase: `getTasks`, `createTask`, `toggleTask`, `deleteTask`, `revalidatePath`, `pgm` (in migrations)
 - Terraform uses snake_case: `project_id`, `app_name`, `subnet_cidr`, `db_tier`, `api_image`, `web_image`
 
 **Database**
@@ -98,7 +98,7 @@ src/
 │   └── app/           # Next.js App Router
 │       ├── layout.tsx     # Root layout
 │       ├── page.tsx       # Home page (tasks list)
-│       ├── actions.ts     # Server actions (getTasks, createTask, toggleTask)
+│       ├── actions.ts     # Server actions (getTasks, createTask, toggleTask, deleteTask)
 │       └── globals.css    # Global styles
 └── infrastructure/    # Terraform for GCP
     ├── main.tf        # VPC, Cloud SQL, Cloud Run, Secret Manager, IAM
