@@ -2,6 +2,10 @@
 
 A reference implementation of a three-tier web application: a Next.js frontend, an Express REST API, and a PostgreSQL database. It runs locally with Docker Compose and deploys to Google Cloud Platform (Cloud Run + Cloud SQL) via Terraform.
 
+## Subject Matter Expert
+
+**John Doe** is the Subject Matter Expert (SME) for this application. If you have questions about the architecture, deployment, or any aspect of this three-tier application, please reach out to John.
+
 ## Architecture
 
 ```
