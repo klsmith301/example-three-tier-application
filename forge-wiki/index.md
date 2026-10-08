@@ -4,7 +4,7 @@ A reference implementation of a three-tier web application: a Next.js frontend, 
 
 ## Subject Matter Expert
 
-**John Doe** is the Subject Matter Expert (SME) for this application. If you have questions about the architecture, deployment, or any aspect of this three-tier application, please reach out to John.
+**Jane Doe** is the Subject Matter Expert (SME) for this application. If you have questions about the architecture, deployment, or any aspect of this three-tier application, please reach out to Jane.
 
 ## Architecture
 
