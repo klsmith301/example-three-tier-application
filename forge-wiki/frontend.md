@@ -36,7 +36,6 @@ The home page displays a list of all tasks fetched from the API. Each task shows
 - A checkbox to mark the task as complete/incomplete
 - Task title text
 - Strikethrough styling for completed tasks
-- A delete button (trash icon) to permanently remove the task
 - Completion counter at the bottom (e.g., "2 / 5 completed")
 
 ### Add Task
@@ -47,10 +46,6 @@ Users can add new tasks using a text input and submit button form. The input is 
 
 Clicking the checkbox on a task toggles its `completed` status via a server action without leaving the page.
 
-### Delete Task
-
-Clicking the trash icon on a task permanently removes it from the database. The delete button is styled with a neutral gray color that turns red on hover for visual feedback. The page updates automatically after deletion.
-
 ## Server Actions
 
 The app uses Next.js Server Actions (defined in `app/actions.ts`) to communicate with the API:
@@ -58,7 +53,6 @@ The app uses Next.js Server Actions (defined in `app/actions.ts`) to communicate
 - **`getTasks()`** — Fetches all tasks from `/tasks` endpoint
 - **`createTask(formData)`** — Creates a new task via `/tasks` POST endpoint
 - **`toggleTask(id, completed)`** — Updates task completion status via `/tasks/:id` PATCH endpoint
-- **`deleteTask(id)`** — Deletes a task via `/tasks/:id` DELETE endpoint
 
 The `API_URL` environment variable controls the API endpoint (default: `http://localhost:3001`).
 
@@ -68,7 +62,6 @@ The `API_URL` environment variable controls the API endpoint (default: `http://l
 - **Responsive:** Mobile-friendly with max-width constraints
 - **Transitions:** Smooth color transitions on hover and focus
 - **Dark mode:** Uses Tailwind's `dark:` prefix for light/dark variants
-- **Delete button:** Gray (zinc-400) by default, red (red-500) on hover
 
 ## Environment Variables
 

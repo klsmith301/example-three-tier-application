@@ -109,23 +109,6 @@ Updates an existing task. Pass `completed` (boolean) or `title` (string) or both
 { "error": "Not found" }
 ```
 
-### Delete a Task
-
-```
-DELETE /tasks/:id
-```
-
-Permanently deletes an existing task.
-
-**Response:** (204 No Content)
-
-Returns an empty response on success (no response body).
-
-**Error:** (404 Not Found)
-```json
-{ "error": "Not found" }
-```
-
 ## Implementation Details
 
 ### Database Connection
@@ -139,7 +122,6 @@ The API uses a PostgreSQL connection pool (`src/api/db.js`) configured via `DATA
 - Title values are trimmed of whitespace before storage
 - Completed status defaults to `false` for new tasks
 - PATCH: fetches the existing row first, then applies partial updates
-- DELETE: uses `rowCount` to distinguish deletion from non-existent rows
 
 ## Environment Variables
 
