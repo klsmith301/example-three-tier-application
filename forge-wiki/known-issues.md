@@ -1,9 +1,5 @@
 # Known issues
 
-## Subject Matter Expert discrepancy
-
-The project owner's guidance indicates Jane Doe should be the current Subject Matter Expert, but the code (forge-wiki/index.md) identifies John Doe as the Subject Matter Expert. These statements contradict each other.
-
 ## No TODOs or FIXMEs found
 
 A search of the codebase found no TODO or FIXME comments.
