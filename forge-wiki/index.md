@@ -20,7 +20,16 @@ A reference implementation of a three-tier web application: Next.js frontend, Ex
 - `README.md` first line is currently `# example-three-tier-application` (a Markdown H1).
 - The only GitHub Actions workflow is `deploy.yml` (no lint/test workflow).
 
-## Pages
+## Feature pages
+
+- [API](api.md)
+- [Backend structure](backend-structure.md)
+- [Database](database.md)
+- [Frontend](frontend.md)
+- [Infrastructure](infrastructure.md)
+- [Local development](local-development.md)
+
+## Standing pages
 
 - [Architecture decisions](architecture-decisions.md)
 - [Coding standards](coding-standards.md)
