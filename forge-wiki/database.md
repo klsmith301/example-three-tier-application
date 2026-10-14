@@ -8,7 +8,7 @@ The database is PostgreSQL 17 managed by Docker Compose locally and Cloud SQL in
 - **Migration Tool:** node-pg-migrate 8.0.4
 - **Node.js:** 22
 
-## Schema
+## Schema (current)
 
 ### Users Table
 
@@ -20,7 +20,7 @@ CREATE TABLE users (
 );
 ```
 
-The users table is defined but currently not used by the application. It serves as a placeholder for future user authentication features.
+Defined in `1718500000000_initial-schema.js`. Currently not used by the application.
 
 ### Tasks Table
 
@@ -33,22 +33,28 @@ CREATE TABLE tasks (
 );
 ```
 
-Stores individual tasks with:
-- **id:** Auto-incrementing primary key
-- **title:** Task description (up to 500 characters)
-- **completed:** Boolean flag (defaults to false)
-- **created_at:** Timestamp of creation (auto-set to current time)
+Defined in `1718500001000_create-tasks.js`. Stores individual tasks.
+
+- **id:** Auto-incrementing primary key. Only index currently present.
+- **title:** Task description (up to 500 characters, NOT NULL).
+- **completed:** Boolean flag (NOT NULL, defaults to false).
+- **created_at:** Timestamp of creation (auto-set, NOT NULL).
+- **No `archived` column exists yet** — needed for the archive/unarchive feature.
+- **No text-search index exists yet** — needed for title search.
+- **No additional composite index on `(created_at, id)` exists yet** — needed for stable pagination.
 
 ## Migrations
 
 Migrations live in `src/db/migrations/` and use [node-pg-migrate](https://salsita.github.io/node-pg-migrate/).
 
-### Migration Files
+### Migration Files (current)
 
 | Timestamp | File | Description |
 |-----------|------|-------------|
 | `1718500000000` | `initial-schema.js` | Creates the `users` table |
 | `1718500001000` | `create-tasks.js` | Creates the `tasks` table |
+
+Migrations are **append-only** (per `agents.md`). Never edit an existing migration; create a new file.
 
 ### Running Migrations
 
@@ -71,6 +77,10 @@ cd src/db
 DATABASE_URL=postgres://app:app@localhost:5432/app npm run migrate:down
 ```
 
+### Migration Rollback Safety
+
+Each migration **must** export both `up` and `down` functions so `npm run migrate:down` can safely revert.
+
 ## Connection Details
 
 ### Local (Docker Compose)
@@ -86,46 +96,22 @@ DATABASE_URL=postgres://app:app@localhost:5432/app npm run migrate:down
 
 - **Host:** Private IP within VPC
 - **Port:** `5432`
-- **User:** Auto-generated (stored in Secret Manager)
-- **Password:** Auto-generated (stored in Secret Manager)
+- **User/Password:** Auto-generated, stored in Secret Manager
 - **Database:** `app`
 - **Connection String:** Stored in Secret Manager, injected as environment variable
-
-## Backup & Recovery
-
-### Local
-
-Data persists in the `postgres_data` Docker volume. To reset:
-```bash
-docker compose down -v  # Delete volume
-```
-
-### Production (Cloud SQL)
-
-Backups are automatically enabled in `prod` environment:
-- **Backup frequency:** Once per 24 hours
-- **Backup time:** 03:00 UTC
-- **Retention:** Default Cloud SQL retention policy
-
-To restore from a backup, use the GCP Console or `gcloud sql backups`.
 
 ## Performance
 
 ### Indexing
 
-Currently, only the primary key is indexed. Add indexes as needed:
-
-```sql
-CREATE INDEX idx_tasks_created_at ON tasks(created_at);
-```
+Currently only the primary key (`id`) is indexed. The API orders tasks by `created_at ASC`; no index on `created_at` exists. For pagination and search, additional indexes will be needed.
 
 ### Connection Pooling
 
-The API uses a PostgreSQL connection pool from the `pg` library with default settings. For production deployments, tune pool size via environment variables or modify `src/api/db.js`.
+The API uses a default `pg.Pool`. Pool size is not explicitly configured.
 
 ## Environment Variables
 
 | Variable | Description |
 |----------|-------------|
 | `DATABASE_URL` | PostgreSQL connection string (used during migrations and by API) |
-| `PGPASSWORD` | PostgreSQL password (sometimes needed for `psql` commands) |

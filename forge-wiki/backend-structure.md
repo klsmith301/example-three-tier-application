@@ -9,7 +9,7 @@ Facts about the current state of the Express API (`src/api/`).
 | `src/api/index.js` | Express application: middleware setup, all route handlers, server startup |
 | `src/api/db.js` | PostgreSQL connection pool (exported singleton) |
 | `src/api/package.json` | Package manifest and npm scripts |
-| `src/api/Dockerfile` | Multi-stage Docker build for the API container |
+| `src/api/Dockerfile` | Single-stage Docker build for the API container |
 
 ## Runtime and Dependencies
 
@@ -48,21 +48,21 @@ module.exports = pool;
 
 - `express.json()` — parses request bodies as JSON.
 
-### Existing Routes
+### Existing Routes (as of last code read)
 
 | Method | Path | Description |
 |--------|------|-------------|
 | `GET` | `/health` | Returns `{ "status": "ok" }` — a static liveness probe, no database interaction |
-| `GET` | `/tasks` | `SELECT * FROM tasks ORDER BY created_at ASC` |
-| `POST` | `/tasks` | `INSERT INTO tasks (title) VALUES ($1) RETURNING *` |
+| `GET` | `/tasks` | `SELECT * FROM tasks ORDER BY created_at ASC` — returns all tasks, no filtering |
+| `POST` | `/tasks` | `INSERT INTO tasks (title) VALUES ($1) RETURNING *` — title validated non-empty |
 | `PATCH` | `/tasks/:id` | Fetches task by id, then `UPDATE tasks SET completed, title WHERE id` |
 
 ### Error Handling
 
-- Route handlers for `/tasks` are `async` but have **no try/catch blocks** — unhandled promise rejections propagate directly to Express (Express 5 catches them automatically and returns 500).
-- The `/health` handler is synchronous and has no error path.
+- Route handlers for `/tasks` are `async` but have **no try/catch blocks** — unhandled promise rejections propagate to Express 5 (which catches and returns 500).
 - 400 is returned for missing/empty `title` on `POST /tasks`.
 - 404 is returned when a task is not found on `PATCH /tasks/:id`.
+- No DELETE endpoint exists in the current codebase.
 
 ### Server Startup
 
@@ -82,7 +82,7 @@ app.listen(PORT, () => {
 
 ## Docker / Compose Integration
 
-- The container is built from `src/api/Dockerfile`.
+- The container is built from `src/api/Dockerfile` (single-stage, copies all files including package-lock.json, runs `npm ci --omit=dev`).
 - In Docker Compose, port 3001 is declared with `expose` (container-internal only; not published to the host).
 - The API service depends on the `migrate` service completing successfully before it starts.
 - Docker Compose health-checks the API via `GET http://api:3001/health` inside the Compose network.
