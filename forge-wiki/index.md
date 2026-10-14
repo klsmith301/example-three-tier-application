@@ -20,7 +20,7 @@ Browser → Web (Next.js :3000) → API (Express :3001) → PostgreSQL
 | Migrations | node-pg-migrate | `src/db/` |
 | Infrastructure | Terraform (GCP) | `src/infrastructure/` |
 
-The app is a simple task manager (to-do list) that demonstrates how the three tiers communicate.
+The app is a simple task manager (to-do list) that demonstrates how the three tiers communicate. The frontend runs on port 3000. The API listens on port 3001 by default, but can be overridden by setting the `PORT` environment variable (defined in `src/api/index.js`).
 
 ## Health Check
 
