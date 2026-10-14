@@ -22,6 +22,10 @@ Browser → Web (Next.js :3000) → API (Express :3001) → PostgreSQL
 
 The app is a simple task manager (to-do list) that demonstrates how the three tiers communicate.
 
+## Health Check
+
+The API exposes a `GET /health` endpoint that returns `{ "status": "ok" }` directly without querying PostgreSQL. This endpoint checks **API liveness only**, not database readiness. Use it for container orchestration probes or monitoring to verify the API server is running.
+
 ## Documentation
 
 - [Architecture Decisions](architecture-decisions.md) — Components, data stores, hosting, and libraries
